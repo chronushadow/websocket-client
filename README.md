@@ -1,25 +1,36 @@
-# websocket-client
+# ros_websocket-client
 
-Python で WebSocket クライアントを実装する。
+ROS において Pub/Sub を構成し、Python で Subscriber 兼 WebSocket クライアントを実装する。
 
 ## Usage
 
-### Requirement
-
 ### Install
+
+```
+docker pull chronushadow/ros-ws-client
+```
 
 ### Run
 
-第1引数に接続先 WebSocket サーバーの URLを指定して実行する。
-
 ```
-python websocket-client.py wss://hoge.hoge
+docker run -it --rm chronushadow/ros-ws-client
 ```
 
 ## Architecture
 
 ### フレームワーク／ライブラリ
 
-[websocket-client](https://github.com/websocket-client/websocket-client) を利用する。
+Pub/Sub ノードの生成やノード間メッセージのやり取りを実装するため、ROS に対する Python クライアントライブラリ [rospy](http://wiki.ros.org/rospy) を利用する。
 
-新しいスレッドを開始して、何らかのインプットがあるまで待機。インプットされたら、WebSocket サーバーへ送信する。
+また、WebSocketクライアントを実装するため、[websocket-client](https://github.com/websocket-client/websocket-client) を利用する。
+
+### マルチスレッド処理
+
+Pub/Sub の Subscriber および WebSocket クライアントは、それぞれ常駐して処理待ちとなるため、同じスレッドで扱うことができない。
+
+そこで、[threading](https://docs.python.jp/2.7/library/threading.html) モジュールを利用して WebSocket クライアントを別スレッドで処理する（マルチスレッド）。
+
+スレッドの生成から `subscribe`, `ws.send` 等の処理シーケンスは以下のとおり。
+
+![マルチスレッド処理](images/multi-thread_processing.svg "マルチスレッド処理")
+

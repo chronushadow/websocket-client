@@ -14,8 +14,8 @@ COPY ros_websocket-client.launch /tmp
 
 COPY create-ros-package.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/create-ros-package.sh
-RUN /bin/bash -c "/usr/local/bin/create-ros-package.sh ${ROS_DISTRO} ${ROS_PACKAGE} ${CATKIN_WS}"
+RUN /bin/bash -c "/usr/local/bin/create-ros-package.sh"
 
 COPY docker-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT [ "/bin/bash", "-c", "/usr/local/bin/docker-entrypoint.sh ${ROS_DISTRO} ${ROS_PACKAGE} ${CATKIN_WS}" ]
+ENTRYPOINT [ "/bin/bash", "-c", "/usr/local/bin/docker-entrypoint.sh" ]

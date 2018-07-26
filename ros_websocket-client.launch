@@ -1,4 +1,4 @@
 <launch>
   <node pkg="ros_whill" name="publisher_node" type="publisher.py"/>
-  <node pkg="ros_whill" name="websocket_client_node" type="websocket-client.py"/>
+  <node pkg="ros_whill" name="websocket_client_node" type="websocket-client.py" args="$(arg url)"/>
 </launch>

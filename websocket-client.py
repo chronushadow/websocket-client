@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-import rospy
 import websocket
-import threading
+import rospy
 from std_msgs.msg import String
+import sys
+import threading
 import ssl
 
 def callback(data, *args):
@@ -29,10 +30,12 @@ def on_close(ws):
 def on_error(ws, error):
     print(error)
 
-url = "wss://trial.chronushadow.xyz"
 sslopt = {"cert_reqs": ssl.CERT_NONE}
 
 if __name__ == '__main__':
+
+    argv = sys.argv
+    url = argv[1]
 
     websocket.enableTrace(True)
     ws = websocket.WebSocketApp(url, on_open=on_open, on_message=on_message, on_error=on_error, on_close=on_close)

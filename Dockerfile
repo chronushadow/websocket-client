@@ -3,7 +3,6 @@ LABEL Name=ros_websocket-client Version=0.0.1
 
 RUN apt-get update && apt-get install -y g++ python-pip
 RUN pip install websocket-client
-# FROM ros-python:melodic
 
 ENV ROS_PACKAGE="ros_whill"\
     CATKIN_WS="/usr/local/src/catkin_ws"
@@ -18,4 +17,4 @@ RUN /bin/bash -c "/usr/local/bin/create-ros-package.sh"
 
 COPY docker-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-ENTRYPOINT [ "/bin/bash", "-c", "/usr/local/bin/docker-entrypoint.sh" ]
+CMD [ "/bin/bash", "-c", "/usr/local/bin/docker-entrypoint.sh" ]

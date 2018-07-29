@@ -2,6 +2,7 @@
 
 import rospy
 from std_msgs.msg import String
+from datetime import datetime
 
 def publish():
     rospy.init_node('publisher', anonymous=True)
@@ -9,8 +10,8 @@ def publish():
     rate = rospy.Rate(1)
     
     while not rospy.is_shutdown():
-        msg = "Hello World %s" % rospy.get_time()
-        rospy.loginfo(msg)
+        msg = datetime.now().isoformat()
+        rospy.loginfo("Publish: %s", msg)
         pub.publish(msg)
         rate.sleep()
 

@@ -6,12 +6,16 @@ from std_msgs.msg import String
 import sys
 import threading
 import ssl
+from datetime import datetime
 
 def callback(data, *args):
-    rospy.loginfo(rospy.get_caller_id() + " Subscribe: %s", data.data)
+    rospy.loginfo("Subscribe: %s", data.data)
+
+    msg = datetime.now().isoformat()
+    rospy.loginfo("Ping: %s", msg)
 
     ws = args[0]
-    ws.send(data.data)
+    ws.send(msg)
 
 def subscribe(ws):
     rospy.init_node('subscriber', anonymous=True)
@@ -19,10 +23,15 @@ def subscribe(ws):
     rospy.spin()
 
 def on_open(ws):
-    print("WebSocket connection opened")
+    print("Connected WebSocket server")
 
 def on_message(ws, msg):
-    print("Recieved message: {0}".format(msg))
+    recieved_time = datetime.now()
+
+    print("Pong: {0}".format(msg))
+    print("Now: {0}".format(recieved_time))
+    server_send_time = datetime.strptime(msg, '%Y-%m-%dT%H:%M:%S.%f')
+    print("Time from server to client: {0}".format(recieved_time - server_send_time))
 
 def on_close(ws):
     print("Disconnected WebSocket server")
